@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/Users/gugi/NetBeansProjects/CLibIS/src/dao/BukuDao.java</file>
+            <file>file:/Users/gugi/NetBeansProjects/CLibIS/src/service/ServiceJdbc.java</file>
+            <file>file:/Users/gugi/NetBeansProjects/CLibIS/src/model/Mahasiswa.java</file>
+            <file>file:/Users/gugi/NetBeansProjects/CLibIS/src/dao/MahasiswaDao.java</file>
+            <file>file:/Users/gugi/NetBeansProjects/CLibIS/src/dao/PetugasDao.java</file>
+            <file>file:/Users/gugi/NetBeansProjects/CLibIS/src/model/Buku.java</file>
+            <file>file:/Users/gugi/NetBeansProjects/CLibIS/src/model/Petugas.java</file>
+            <file>file:/Users/gugi/NetBeansProjects/CLibIS/src/main/Main.java</file>
+        </group>
+    </open-files>
+</project-private>

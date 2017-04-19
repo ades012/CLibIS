@@ -26,8 +26,8 @@ public class MahasiswaDao {
     private PreparedStatement getAllStatement;
     private PreparedStatement getByIdStatement;
 
-    private final String insertQuery = "insert into mahasiswa(nama,alamat,nohp) "
-            + " values(?,?,?)";
+    private final String insertQuery = "insert into mahasiswa(npm,nama,alamat,nohp) "
+            + " values(?,?,?,?)";
     private final String updateQuery = "update mahasiswa set nama=?, "
             + " alamat=?, nohp=? where npm=?";
     private final String deleteQuery = "delete from mahasiswa where npm=?";
@@ -44,19 +44,20 @@ public class MahasiswaDao {
     }
     
     public Mahasiswa save(Mahasiswa mahasiswa) throws SQLException{
-        if (mahasiswa.getNpm() == 0) {
-            insertStatement.setString(1, mahasiswa.getNama());
-            insertStatement.setString(2, mahasiswa.getAlamat());
-            insertStatement.setString(3, mahasiswa.getNohp());
-            int npm = (int) insertStatement.executeUpdate();
-            mahasiswa.setNpm(npm);
-        } else {
-            insertStatement.setString(1, mahasiswa.getNama());
-            insertStatement.setString(2, mahasiswa.getAlamat());
-            insertStatement.setString(3, mahasiswa.getNohp());
-            updateStatement.setInt(5, mahasiswa.getNpm());
-            updateStatement.executeUpdate();
-        }
+        insertStatement.setInt(1, mahasiswa.getNpm());
+        insertStatement.setString(2, mahasiswa.getNama());
+        insertStatement.setString(3, mahasiswa.getAlamat());
+        insertStatement.setString(4, mahasiswa.getNohp());
+        insertStatement.executeUpdate();
+        return mahasiswa;
+    }
+    
+    public Mahasiswa update(Mahasiswa mahasiswa) throws SQLException {
+        insertStatement.setString(1, mahasiswa.getNama());
+        insertStatement.setString(2, mahasiswa.getAlamat());
+        insertStatement.setString(3, mahasiswa.getNohp());
+        updateStatement.setInt(5, mahasiswa.getNpm());
+        updateStatement.executeUpdate();
         return mahasiswa;
     }
     
@@ -67,7 +68,7 @@ public class MahasiswaDao {
     }
     
     public Mahasiswa getByNpm(int npm) throws SQLException{
-        getByIdStatement.setLong(1, npm);
+        getByIdStatement.setInt(1, npm);
         ResultSet rs = getByIdStatement.executeQuery();
         //proses mapping dari relational ke object
         if (rs.next()) {
@@ -92,7 +93,6 @@ public class MahasiswaDao {
             mahasiswa.setNohp(rs.getString("nohp"));
             mahasiswaR.add(mahasiswa);
         }
-        System.out.println(mahasiswaR);
         return mahasiswaR;
     }
 }

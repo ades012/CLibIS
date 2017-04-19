@@ -149,18 +149,35 @@ public class Main {
             switch (pilih) {
                 case "1":
                     List<Mahasiswa> anggotaR = service.getAllMahasiswa();
-                    System.out.println(anggotaR.toString());
-                    if (anggotaR == null) {
-                        System.out.println("Belum ada anggota yang terdaftar. Silakan tambahkan anggota terlebih dahulu!");
+                    if (anggotaR.isEmpty()) {
+                        System.out.println("\nBelum ada anggota yang terdaftar. Silakan tambahkan anggota terlebih dahulu!");
                     } else {
                         System.out.println("NPM\tNama\t\t\tAlamat\t\t\tNo. HP");
                         for (Mahasiswa anggota : anggotaR) {
                             System.out.println(anggota.getNpm()+"\t"+anggota.getNama()+"\t\t\t"+anggota.getAlamat()+"\t\t\t"+anggota.getNohp());
                         }                        
                     }
-
                     break;
                 case "2":
+                    System.out.print("NPM : ");
+                    String npm = in.nextLine();
+                    System.out.print("Nama : ");                    
+                    String nama = in.nextLine();
+                    System.out.print("Alamat : ");
+                    String alamat = in.nextLine();
+                    System.out.print("No. HP : ");
+                    String nohp = in.nextLine();
+                    System.out.print("Simpan? (Y/N) : ");
+                    String tambah = in.nextLine();
+                    if (tambah.toLowerCase().equals("y")) {
+                        System.out.print("sedang menambah mahasiswa ...");
+                        Mahasiswa mhs = new Mahasiswa();
+                        mhs.setNpm(Integer.parseInt(npm));
+                        mhs.setNama(nama);
+                        mhs.setAlamat(alamat);
+                        mhs.setNohp(nohp);
+                        service.save(mhs);
+                    }
                     break;
                 case "0":
                     active = false;

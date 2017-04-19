@@ -17,15 +17,17 @@ import model.Mahasiswa;
  */
 public class ServiceJdbc {
 
-
     private PetugasDao petugasDao;
     private MahasiswaDao mahasiswaDao;
     private Connection connection;
+    
     public void setDataSource(DataSource dataSource){
         try {
             connection = dataSource.getConnection();
             petugasDao = new PetugasDao();
+            mahasiswaDao = new MahasiswaDao();
             petugasDao.setConnection(connection);
+            mahasiswaDao.setConnection(connection);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
