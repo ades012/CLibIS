@@ -152,9 +152,10 @@ public class Main {
                     if (anggotaR.isEmpty()) {
                         System.out.println("\nBelum ada anggota yang terdaftar. Silakan tambahkan anggota terlebih dahulu!");
                     } else {
-                        System.out.println("NPM\tNama\t\t\tAlamat\t\t\tNo. HP");
+                        System.out.println("\nNPM\t| Nama\t\t\t| Alamat\t\t\t| No. HP");
+                        System.out.println("--------------------------------------------------------------------------------------");
                         for (Mahasiswa anggota : anggotaR) {
-                            System.out.println(anggota.getNpm()+"\t"+anggota.getNama()+"\t\t\t"+anggota.getAlamat()+"\t\t\t"+anggota.getNohp());
+                            System.out.println(anggota.getNpm()+"\t| "+anggota.getNama()+"\t\t| "+anggota.getAlamat()+"\t\t\t| "+anggota.getNohp());
                         }                        
                     }
                     break;
@@ -170,13 +171,50 @@ public class Main {
                     System.out.print("Simpan? (Y/N) : ");
                     String tambah = in.nextLine();
                     if (tambah.toLowerCase().equals("y")) {
-                        System.out.print("sedang menambah mahasiswa ...");
                         Mahasiswa mhs = new Mahasiswa();
                         mhs.setNpm(Integer.parseInt(npm));
                         mhs.setNama(nama);
                         mhs.setAlamat(alamat);
                         mhs.setNohp(nohp);
                         service.save(mhs);
+                    }
+                    break;
+                case "3":
+                    System.out.print("Masukkan NPM : ");
+                    String npm_x = in.nextLine();
+                    Mahasiswa mhs_x = service.getMahasiswa(Integer.parseInt(npm_x));
+                    if (mhs_x == null) {
+                        System.out.println("Tidak ditemukan mahasiswa dengan NPM " + npm_x);
+                        break;
+                    }
+                    System.out.print("Nama : ");                    
+                    String nama_x = in.nextLine();
+                    System.out.print("Alamat : ");
+                    String alamat_x = in.nextLine();
+                    System.out.print("No. HP : ");
+                    String nohp_x = in.nextLine();
+                    System.out.print("Simpan? (Y/N) : ");
+                    String tambah_x = in.nextLine();
+                    if (tambah_x.toLowerCase().equals("y")) {
+                        mhs_x.setNpm(Integer.parseInt(npm_x));
+                        mhs_x.setNama(nama_x);
+                        mhs_x.setAlamat(alamat_x);
+                        mhs_x.setNohp(nohp_x);
+                        service.update(mhs_x);
+                    }
+                    break;
+                case "4":
+                    System.out.print("Masukkan NPM : ");
+                    String npm_d = in.nextLine();
+                    Mahasiswa mhs_d = service.getMahasiswa(Integer.parseInt(npm_d));
+                    if (mhs_d == null) {
+                        System.out.println("Tidak ditemukan mahasiswa dengan NPM "+npm_d);
+                        break;
+                    }
+                    System.out.print("Hapus? (Y/N) : ");
+                    String hapus = in.nextLine();
+                    if (hapus.toLowerCase().equals("y")) {
+                        service.delete(mhs_d);
                     }
                     break;
                 case "0":

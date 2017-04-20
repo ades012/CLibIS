@@ -95,11 +95,27 @@ public class ServiceJdbc {
         }
         return mahasiswa;
     }
+    
+    public Mahasiswa update(Mahasiswa mahasiswa) {
+        try {
+            connection.setAutoCommit(false);
+            mahasiswaDao.update(mahasiswa);
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return mahasiswa;
+    }
 
     public Mahasiswa delete(Mahasiswa mahasiswa) {
         try {
             connection.setAutoCommit(false);
-            mahasiswaDao.save(mahasiswa);
+            mahasiswaDao.delete(mahasiswa);
             connection.commit();
             connection.setAutoCommit(true);
         } catch (SQLException ex) {

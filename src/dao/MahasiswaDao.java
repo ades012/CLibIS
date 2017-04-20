@@ -56,7 +56,7 @@ public class MahasiswaDao {
         insertStatement.setString(1, mahasiswa.getNama());
         insertStatement.setString(2, mahasiswa.getAlamat());
         insertStatement.setString(3, mahasiswa.getNohp());
-        updateStatement.setInt(5, mahasiswa.getNpm());
+        updateStatement.setInt(4, mahasiswa.getNpm());
         updateStatement.executeUpdate();
         return mahasiswa;
     }
