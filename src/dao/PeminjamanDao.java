@@ -32,7 +32,7 @@ public class PeminjamanDao {
             + " idpetugas=?, waktupinjam=?, waktukembali=? where id=?";
     private final String deleteQuery = "delete from peminjaman where id=?";
     private final String getByIdQuery = "select *, COUNT(detailpeminjaman.idbuku) as jumlahbuku from peminjaman JOIN mahasiswa ON peminjaman.npm = mahasiswa.npm JOIN petugas ON peminjaman.idpetugas = petugas.id JOIN detailpeminjaman ON peminjaman.id = detailpeminjaman.idpeminjaman where peminjaman.id =?";
-    private final String getAllQuery = "select *, COUNT(detailpeminjaman.idbuku) as jumlahbuku from peminjaman JOIN mahasiswa ON peminjaman.npm = mahasiswa.npm JOIN petugas ON peminjaman.idpetugas = petugas.id JOIN detailpeminjaman ON peminjaman.id = detailpeminjaman.idpeminjaman";
+    private final String getAllQuery = "select *, COUNT(peminjaman.id) as jumlahbuku from peminjaman JOIN mahasiswa ON peminjaman.npm = mahasiswa.npm JOIN petugas ON peminjaman.idpetugas = petugas.id RIGHT OUTER JOIN detailpeminjaman ON peminjaman.id = detailpeminjaman.idpeminjaman GROUP BY peminjaman.id";
 
     public void setConnection(Connection connection) throws SQLException {
         this.connection = connection;
@@ -50,7 +50,13 @@ public class PeminjamanDao {
             insertStatement.setString(3, peminjaman.getWaktupinjam());
             insertStatement.setString(4, peminjaman.getWaktukembali());
             int id = (int) insertStatement.executeUpdate();
-            peminjaman.setId(id);
+            try (ResultSet generatedKeys = insertStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    peminjaman.setId(generatedKeys.getInt(1));
+                } else {
+                    System.out.println("Gagal menyimpan peminjaman baru");
+                }
+            }
         } else {
             updateStatement.setInt(1, peminjaman.getNpm());
             updateStatement.setInt(2, peminjaman.getIdpetugas());

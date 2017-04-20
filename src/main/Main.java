@@ -7,7 +7,11 @@ package main;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import model.Buku;
@@ -65,18 +69,12 @@ public class Main {
                             getPeminjamanMenu(service, petugas);
                             break;
                         case 2:
-                            getPengembalianMenu(service, petugas);
-                            break;
-                        case 3:
-                            getHistoriMenu();
-                            break;
-                        case 4:
                             getAnggotaMenu(service);
                             break;
-                        case 5:
+                        case 3:
                             getBukuMenu(service);
                             break;
-                        case 6:
+                        case 4:
                             System.out.println("\nAnda telah berhasil keluar!\n");
                             petugas = null;
                             loggedin = false;
@@ -101,11 +99,9 @@ public class Main {
     public static void getMainMenu() {
         System.out.println("Menu Utama : \n");
         System.out.println("1. Peminjaman Buku");
-        System.out.println("2. Pengembalian Buku");
-        System.out.println("3. Histori Peminjaman");
-        System.out.println("4. Pengelolaan Anggota");
-        System.out.println("5. Pengelolaan Buku");
-        System.out.println("6. Keluar");
+        System.out.println("2. Pengelolaan Anggota");
+        System.out.println("3. Pengelolaan Buku");
+        System.out.println("4. Log Out");
         
         System.out.print("\nPilihan : ");
     }
@@ -132,7 +128,8 @@ public class Main {
                         System.out.println("\nID Peminjaman\t| Nama Mahasiswa\t| Jumlah Buku\t\t\t| Waktu Pinjam \t\t| Waktu Kembali");
                         System.out.println("-------------------------------------------------------------------------------------------------------------------");
                         for (Peminjaman peminjaman : peminjamanR) {
-                            System.out.println(peminjaman.getId() + "\t\t| " + peminjaman.getNamamahasiswa()+ "\t\t| " + peminjaman.getJumlahbuku() + "\t\t\t| " + peminjaman.getWaktupinjam()+ "\t\t" + peminjaman.getWaktukembali());
+                            String waktukembali = peminjaman.getWaktukembali() == null ? "Belum kembali" : peminjaman.getWaktukembali();
+                            System.out.println(peminjaman.getId() + "\t\t| " + peminjaman.getNamamahasiswa()+ "\t\t| " + peminjaman.getJumlahbuku() + "\t\t\t| " + peminjaman.getWaktupinjam()+ "\t\t| " + waktukembali);
                         }
                     }
                     break;
@@ -158,7 +155,7 @@ public class Main {
                             System.out.println("\nID Buku\t| Judul Buku");
                             System.out.println("------------------------------------------------");
                             for (DetailPeminjaman detail : detailR) {
-                                System.out.println(detail.getId() + "\t| " + detail.getJudulbuku());
+                                System.out.println(detail.getIdbuku()+ "\t| " + detail.getJudulbuku());
                             }
                         }
                     }
@@ -183,6 +180,7 @@ public class Main {
                         
                         System.out.print("\nPilihan : ");
                         String pilihan = in.nextLine();
+                        pilihan = pilihan != "" ? pilihan : "0";
                         switch (Integer.parseInt(pilihan)) {
                             case 1:
                                 System.out.print("\nMasukkan NPM : ");
@@ -274,8 +272,23 @@ public class Main {
                             case 3:
                                 System.out.print("Selesai input form peminjaman? (Y/N) : ");
                                 String selesaiform = in.nextLine();
-                                if (!selesaiform.toLowerCase().equals("y")) {
-                                    
+                                if (selesaiform.toLowerCase().equals("y")) {
+                                    Peminjaman pinjambaru = new Peminjaman();
+                                    pinjambaru.setNpm(npm);
+                                    pinjambaru.setIdpetugas(petugas.getId());
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                                    Date date = new Date();
+                                    String now = dateFormat.format(date);
+                                    pinjambaru.setWaktupinjam(now);
+                                    pinjambaru.setWaktukembali(null);
+                                    Peminjaman pinjam_n = service.save(pinjambaru);
+                                    for (Buku buku : buku_pinjamR) {
+                                        DetailPeminjaman dp = new DetailPeminjaman();
+                                        dp.setIdpeminjaman(pinjam_n.getId());
+                                        dp.setIdbuku(buku.getId());
+                                        service.save(dp);
+                                    }
+                                    inform = false;
                                 }
                                 break;
                             case 0:
@@ -287,31 +300,48 @@ public class Main {
                     }
                     break;
                 case "4":
-                    System.out.print("Masukkan ID Buku : ");
-                    String id_buku_x = in.nextLine();
-                    Buku buku_x = service.getBuku(Integer.parseInt(id_buku_x));
-                    if (buku_x == null) {
-                        System.out.println("Tidak ditemukan buku dengan ID " + id_buku_x);
+                    List<Peminjaman> peminjaman_R = service.getAllPeminjaman();
+                    int Belumkembali = 0;
+                    if (peminjaman_R.isEmpty()) {
+                        System.out.println("\nBelum ada peminjaman.");
+                        break;
+                    } else {
+                        System.out.println("\nID Peminjaman\t| Nama Mahasiswa\t| Jumlah Buku\t\t\t| Waktu Pinjam \t\t| Waktu Kembali");
+                        System.out.println("-------------------------------------------------------------------------------------------------------------------");                        
+                        for (Peminjaman peminjaman_ : peminjaman_R) {
+                            if (peminjaman_.getWaktukembali() == null) {
+                                Belumkembali++;
+                                String waktukembali = peminjaman_.getWaktukembali() == null ? "Belum kembali" : peminjaman_.getWaktukembali();
+                                System.out.println(peminjaman_.getId() + "\t\t| " + peminjaman_.getNamamahasiswa() + "\t\t| " + peminjaman_.getJumlahbuku() + "\t\t\t| " + peminjaman_.getWaktupinjam() + "\t\t| " + waktukembali);
+                            }
+                        }
+                    }
+                    if (Belumkembali == 0) {
+                        System.out.print("\nTidak ada peminjaman yang belum dikembalikan!\n");
                         break;
                     }
-                    System.out.print("Judul : ");
-                    String judul_x = in.nextLine();
-                    System.out.print("Pengarang : ");
-                    String pengarang_x = in.nextLine();
-                    System.out.print("Penerbit : ");
-                    String penerbit_x = in.nextLine();
-                    System.out.print("Tahun : ");
-                    String tahun_x = in.nextLine();
-                    System.out.print("Simpan? (Y/N) : ");
-                    String ubah_x = in.nextLine();
-                    if (ubah_x.toLowerCase().equals("y")) {
-                        buku_x.setId(Integer.parseInt(id_buku_x));
-                        buku_x.setJudul(judul_x);
-                        buku_x.setPengarang(pengarang_x);
-                        buku_x.setPenerbit(penerbit_x);
-                        buku_x.setTahun(Integer.parseInt(tahun_x));
-                        service.save(buku_x);
+                    System.out.print("\nMasukkan ID peminjaman : ");
+                    String idpinjam = in.nextLine();
+                    Peminjaman pinjam_k = service.getPeminjaman(Integer.parseInt(idpinjam));
+                    if (pinjam_k.getId() == 0) {
+                        System.out.println("Tidak ada peminjaman dengan ID " + idpinjam);
+                        break;
                     }
+                    if (pinjam_k.getWaktukembali() != null) {
+                        System.out.println("Peminjaman dengan ID " + idpinjam + " telah dikembalikan sebelumnya!");
+                        break;
+                    }
+                    System.out.print("\nLakukan pengembalian? (Y/N) : ");
+                    String kembali = in.nextLine();
+                    if (!kembali.toLowerCase().equals("y")) {
+                        break;
+                    }
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                    Date date = new Date();
+                    String now = dateFormat.format(date);
+                    pinjam_k.setWaktukembali(now);
+                    service.save(pinjam_k);
+                    System.out.println("Peminjaman dengan ID "+pinjam_k.getId()+" telah berhasil dikembalikan");
                     break;
                 case "5":
                     System.out.print("Masukkan ID Buku : ");
@@ -332,20 +362,6 @@ public class Main {
                     break;
             }
         }
-    }
-    
-    public static void getPengembalianMenu(ServiceJdbc service, Petugas petugas) {
-        System.out.println("Menu Peminjaman Buku : \n");
-        System.out.println("0. Kembali ke Menu Utama");
-        
-        System.out.print("\nPilihan : ");
-    }
-    
-    public static void getHistoriMenu() {
-        System.out.println("Menu Histori Peminjaman : \n");
-        System.out.println("0. Kembali ke Menu Utama");
-
-        System.out.print("\nPilihan : ");
     }
     
     public static void getAnggotaMenu(ServiceJdbc service) {
