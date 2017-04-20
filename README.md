@@ -17,26 +17,26 @@ Username : gugi
 
 Password : asdasd
 
-![alt tag](https://lh4.googleusercontent.com/mWHytwFqa3Ap50wTx1DyVo9Dew6-zXgEM_-qyOaZR-oq6eqf8vDMMQ48QmkiUVRQu_TET7T5NGsnqw0=w1366-h650)
+[Tampilan Login](https://lh4.googleusercontent.com/mWHytwFqa3Ap50wTx1DyVo9Dew6-zXgEM_-qyOaZR-oq6eqf8vDMMQ48QmkiUVRQu_TET7T5NGsnqw0=w1366-h650)
 
 ### Menu Utama
 
-![alt tag](https://lh5.googleusercontent.com/jRTv_0HLjlK8GivA0XmEOUccqH8EtPcb4lr8oeYqCGsS4hn9FjGLtho5OgRhF7rQ-3J4FNtuGNQxC3E=w1366-h694)
+[Tampilan Menu Utama](https://lh5.googleusercontent.com/jRTv_0HLjlK8GivA0XmEOUccqH8EtPcb4lr8oeYqCGsS4hn9FjGLtho5OgRhF7rQ-3J4FNtuGNQxC3E=w1366-h694)
 
 ### Menu Pengelolaan Anggota
 Pengelolaan Aggota dapat diakses dari Menu Utama dengan pilihan 2.
 
-![alt tag](https://lh5.googleusercontent.com/tMQBcAVPYOwFrD6DGT-f61jyUHBXRO5HWlUPnflVtNCKNPtpBDMmGwzs6hbL6SB4nNdpceGIVeBG5n0=w1366-h694)
+[Tampilan Menu Pengelolaan Anggota](https://lh5.googleusercontent.com/tMQBcAVPYOwFrD6DGT-f61jyUHBXRO5HWlUPnflVtNCKNPtpBDMmGwzs6hbL6SB4nNdpceGIVeBG5n0=w1366-h694)
 
 ### Menu Pengelolaan Buku
 Pengelolaan Buku dapat diakses dari Menu Utama dengan pilihan 3.
 
-![alt tag](https://lh6.googleusercontent.com/Y8s8kVlrrWCT15p9Et014QJZPOZ1SsHLKMU_o1VbRLhr86QFcoqgWCy5epii043FHOQejhVaQbcxCwA=w1366-h694)
+[Tampilan Menu Pengelolaan Buku](https://lh6.googleusercontent.com/Y8s8kVlrrWCT15p9Et014QJZPOZ1SsHLKMU_o1VbRLhr86QFcoqgWCy5epii043FHOQejhVaQbcxCwA=w1366-h694)
 
 ### Menu Peminjaman Buku
 Peminjaman Buku dapat diakses dari Menu Utama dengan pilihan 1.
 
-![alt tag](https://lh4.googleusercontent.com/op9rfafJopMCagwcpKyTmT6F0uZU85N69xI1Ti10dUALvBRSLaLxHnlgTvRon32Upl4F8FUdeqkYXss=w1366-h694)
+[Tampilan Menu Peminjaman Buku](https://lh4.googleusercontent.com/op9rfafJopMCagwcpKyTmT6F0uZU85N69xI1Ti10dUALvBRSLaLxHnlgTvRon32Upl4F8FUdeqkYXss=w1366-h694)
 
 Pada Menu ini terdapat menu untuk melihat daftar peminjaman buku, detail peminjaman buku. Peminjaman dan pengembalian buku juga terdapat pada menu ini.
 
