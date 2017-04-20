@@ -53,9 +53,9 @@ public class MahasiswaDao {
     }
     
     public Mahasiswa update(Mahasiswa mahasiswa) throws SQLException {
-        insertStatement.setString(1, mahasiswa.getNama());
-        insertStatement.setString(2, mahasiswa.getAlamat());
-        insertStatement.setString(3, mahasiswa.getNohp());
+        updateStatement.setString(1, mahasiswa.getNama());
+        updateStatement.setString(2, mahasiswa.getAlamat());
+        updateStatement.setString(3, mahasiswa.getNohp());
         updateStatement.setInt(4, mahasiswa.getNpm());
         updateStatement.executeUpdate();
         return mahasiswa;

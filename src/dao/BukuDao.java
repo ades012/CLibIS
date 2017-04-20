@@ -25,6 +25,7 @@ public class BukuDao {
     private PreparedStatement deleteStatement;
     private PreparedStatement getAllStatement;
     private PreparedStatement getByIdStatement;
+    private PreparedStatement getBySearchStatement;
 
     private final String insertQuery = "insert into buku(judul,pengarang,penerbit,tahun) "
             + " values(?,?,?,?)";
@@ -33,6 +34,7 @@ public class BukuDao {
     private final String deleteQuery = "delete from buku where id=?";
     private final String getByIdQuery = "select * from buku where id =?";
     private final String getAllQuery = "select * from buku";
+    private final String getBySearchQuery = "select * from buku WHERE judul LIKE ?";
 
     public void setConnection(Connection connection) throws SQLException {
         this.connection = connection;
@@ -41,6 +43,7 @@ public class BukuDao {
         deleteStatement = this.connection.prepareStatement(deleteQuery);
         getByIdStatement = this.connection.prepareStatement(getByIdQuery);
         getAllStatement = this.connection.prepareStatement(getAllQuery);
+        getBySearchStatement = this.connection.prepareStatement(getBySearchQuery);
     }
     
     public Buku save(Buku buku) throws SQLException{
@@ -52,10 +55,10 @@ public class BukuDao {
             int id = (int) insertStatement.executeUpdate();
             buku.setId(id);
         } else {
-            insertStatement.setString(1, buku.getJudul());
-            insertStatement.setString(2, buku.getPengarang());
-            insertStatement.setString(3, buku.getPenerbit());
-            insertStatement.setInt(4, buku.getTahun());
+            updateStatement.setString(1, buku.getJudul());
+            updateStatement.setString(2, buku.getPengarang());
+            updateStatement.setString(3, buku.getPenerbit());
+            updateStatement.setInt(4, buku.getTahun());
             updateStatement.setInt(5, buku.getId());
             updateStatement.executeUpdate();
         }
@@ -69,7 +72,7 @@ public class BukuDao {
     }
     
     public Buku getById(int id) throws SQLException{
-        getByIdStatement.setLong(1, id);
+        getByIdStatement.setInt(1, id);
         ResultSet rs = getByIdStatement.executeQuery();
         //proses mapping dari relational ke object
         if (rs.next()) {
@@ -82,6 +85,22 @@ public class BukuDao {
             return buku;
         }
         return null;
+    }
+    
+    public List<Buku> getBySearch(String cari) throws SQLException{
+        List<Buku> bukuR = new ArrayList<>();
+        getBySearchStatement.setString(1, '%'+cari+'%');
+        ResultSet rs = getBySearchStatement.executeQuery();
+        while(rs.next()){
+            Buku buku = new Buku();
+            buku.setId(rs.getInt("id"));
+            buku.setJudul(rs.getString("judul"));
+            buku.setPengarang(rs.getString("pengarang"));
+            buku.setPenerbit(rs.getString("penerbit"));
+            buku.setTahun(rs.getInt("tahun"));
+            bukuR.add(buku);
+        }
+        return bukuR;
     }
     
     public List<Buku> getAll() throws SQLException{
